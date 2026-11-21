@@ -1,0 +1,45 @@
+GTA 6 KLIPLEYICI
+================
+
+ILK KEZ (tek seferlik)
+  kurulum.bat dosyasina cift tikla. Bitince kapat.
+
+KLIP CIKARMAK
+  1. klip.bat dosyasina cift tikla.
+  2. Yayin linkini yapistir (Twitch VOD ya da YouTube yayini), Enter.
+  3. Bekle. Bitince klasor kendiligidan acilir:
+       klipler_cikti\<yayinci>\klip1_...\klip1_....mp4   <- paylasilacak dikey video
+                                     \aciklama.txt      <- TikTok + YouTube Shorts icin
+                                                           Turkce baslik, aciklama, hashtag
+                                     \altyazi.ass
+
+NE YAPIYOR
+  1. Sadece sesi indirir (4 saatlik yayin ~200 MB, hizli)
+  2. Sesin patladigi anlari + chat'in coskuldugu anlari bulur
+  3. En iyi 15 adayi Whisper ile yaziya doker
+  4. Puanlar (bilgisayarda "claude" komutu = Claude Code varsa Claude puanlar,
+     yoksa kural tabanli puan)
+  5. En iyi 3 ani indirir: facecam ustte, oyun altta, kelime kelime altyazi,
+     1080x1920 mp4
+
+ALTYAZI
+  Varsayilan: ustte Ingilizce (kelime kelime sari vurgulu), altinda Turkce ceviri.
+  klip.bat --altyazi tr      sadece Turkce altyazi (buyuk)
+  klip.bat --altyazi en      sadece Ingilizce
+
+AYARLAR (klip.bat'i komut satirindan calistirirsan)
+  klip.bat --kac 5            5 klip cikar
+  klip.bat --model base       daha hizli ama daha kotu altyazi
+  klip.bat --model medium     daha iyi altyazi, daha yavas
+  klip.bat --sadece-analiz    sadece adaylari bul, klip yapma
+  klip.bat --secim 2,5,9      adaylar.json'daki su adaylardan klip yap
+
+CLAUDE'A PUANLATMAK
+  Analizden sonra Claude sohbetine "adaylari puanla" yaz; Claude
+  klipler_cikti\...\adaylar.json dosyasini okuyup en iyilerini secer,
+  sana --secim numaralarini verir.
+
+NOT
+  Baskasinin yayinini kendi hesabinda paylasip para kazanacaksan
+  yayincinin klip programi / izni olmasina dikkat et, yoksa telif
+  sikayeti gelebilir.
