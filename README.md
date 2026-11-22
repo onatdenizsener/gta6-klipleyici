@@ -55,7 +55,7 @@ klipler_cikti/
 İkinci mod: **YouTube Shorts, Instagram Reels ve TikTok**'ta son bir haftanın en çok izlenen yabancı GTA 6 videolarını bulur, indirir, konuşmayı yazıya döker, Türkçeye çevirir ve büyük Türkçe altyazılı 1080x1920 video yapar.
 
 ```
-Kaynaklar: YouTube araması + Instagram #gta6 + hesaplar.txt (TikTok/YouTube hesapları)
+Kaynaklar: YouTube araması + Instagram #gta6 + TikTok #gta6 + hesaplar.txt
   ├─ 1. Topla ................ izlenme, beğeni, tarih (son 1 hafta)
   ├─ 2. Kopyaları birleştir .. aynı süre + aynı kapak / başlık = aynı video
   │                            kaynak = ilk yükleyen, sıralama = tüm kopyaların toplam izlenmesi
@@ -76,19 +76,20 @@ Aynı video genelde 5-10 hesapta birden dolaşıyor. Program bunları tek video 
 ### Instagram ve TikTok
 
 - **Instagram** giriş istiyor. Tarayıcıda instagram.com'a giriş yap, sonra `shorts.bat --tarayici firefox` (ya da `edge`). Chrome'da çerez okuma Windows'ta çoğu zaman çalışmıyor; Firefox en sorunsuzu.
-- **TikTok** hashtag aramasını yt-dlp şu an desteklemiyor. Takip ettiğin GTA 6 sayfalarını **`hesaplar.txt`**'ye yaz (`@kullanici`), program her birinin son 12 videosuna bakar. YouTube kanalı da yazabilirsin (`https://www.youtube.com/@kanal/shorts`).
+- **TikTok** #gta6 sayfası, bilgisayardaki Edge (yoksa Chrome) arka planda açılıp kaydırılarak taranır; ilk seferde `playwright` paketi kendiliğinden kurulur, ayrı tarayıcı indirilmez. TikTok doğrulama (captcha) isterse o tur atlanır.
+- Ayrıca takip ettiğin sayfaları **`hesaplar.txt`**'ye yazabilirsin (`@kullanici` ya da `https://www.youtube.com/@kanal/shorts`), program her birinin son 12 videosuna da bakar.
 
 Çıktı `klipler_cikti/shorts/` altında: video, `aciklama.txt` (TikTok + Reels + Shorts metni, orijinal hesaba kaynak verilmiş), `bilgi.json`. `son_liste.json` taranan tüm adayları, `islenenler.txt` ve `yapilan_metinler.json` bir daha seçilmeyecek videoları tutar.
 
 | Seçenek | Ne yapar |
 |---|---|
 | `--kac 5` | 5 video yap (varsayılan 3) |
-| `--kaynak youtube,instagram,hesaplar` | Hangi kaynaklara bakılsın (varsayılan hepsi) |
+| `--kaynak youtube,instagram,tiktok,hesaplar` | Hangi kaynaklara bakılsın (varsayılan hepsi) |
 | `--tarayici firefox` | Instagram/TikTok girişini bu tarayıcıdan al |
 | `--donem gun/hafta/ay/yil/hepsi` | Hangi dönemin videoları (varsayılan hafta) |
 | `--sirala izlenme/begeni/hiz` | En çok izlenen (varsayılan), en çok beğenilen, ya da günlük izlenmesi en yüksek |
 | `--ara "GTA 6 Lucia"` | YouTube arama kelimesi |
-| `--etiket gta6vicecity` | Instagram hashtag'i (varsayılan gta6) |
+| `--etiket gta6vicecity` | Instagram / TikTok hashtag'i (varsayılan gta6) |
 | `--altyazi ikili` | Orijinal dil + altında Türkçe (varsayılan sadece Türkçe) |
 | `--sadece-liste` | Video yapma, sadece en viral adayları listele |
 | `--min-izlenme 1000` | Daha az izlenenleri de al (varsayılan 10.000) |

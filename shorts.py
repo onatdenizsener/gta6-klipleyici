@@ -9,6 +9,7 @@ Kaynaklar:
   youtube   : YouTube aramasi (izlenmeye gore, secilen donem)
   instagram : #hashtag sayfasi (tarayicida Instagram'a giris yapilmis olmali,
               --tarayici firefox/edge/chrome ile cerezler alinir)
+  tiktok    : #hashtag sayfasi (bilgisayardaki Edge arka planda acilip kaydirilir)
   hesaplar  : hesaplar.txt icindeki TikTok / YouTube / Instagram hesaplarinin son videolari
   --link    : tek bir video linki (YouTube, TikTok, Instagram fark etmez)
 
@@ -43,6 +44,7 @@ DONEMLER = {"gun": (2, 1), "hafta": (3, 7), "ay": (4, 31), "yil": (5, 366), "hep
 TR_HARF = re.compile(r"[çğıöşüÇĞİÖŞÜ]")
 PLATFORM_AD = {"youtube": "YouTube", "tiktok": "TikTok", "instagram": "Instagram"}
 
+TIKTOK_TAG = "https://www.tiktok.com/tag/{}"
 TARAYICI = None   # --tarayici ile dolar: yt-dlp cerezleri buradan alir
 
 
@@ -99,6 +101,65 @@ def youtube_ara(sorgu, donem, limit):
 
 def instagram_tag(etiket, limit):
     return liste_linkleri(f"https://www.instagram.com/explore/tags/{etiket}/", limit)
+
+
+def _playwright():
+    try:
+        from playwright.sync_api import sync_playwright
+    except ImportError:
+        import subprocess
+        log("    TikTok için playwright kuruluyor (tek seferlik)...")
+        subprocess.run([sys.executable, "-m", "pip", "install", "-q", "playwright"], check=True)
+        from playwright.sync_api import sync_playwright
+    return sync_playwright
+
+
+def tiktok_tag(etiket, limit):
+    """TikTok #etiket sayfasindaki video linkleri. yt-dlp'nin TikTok etiket destegi bozuk
+    oldugu icin bilgisayarda kurulu Edge (yoksa Chrome) arka planda acilip sayfa kaydirilir."""
+    sync_playwright = _playwright()
+    linkler = []
+    with sync_playwright() as p:
+        tarayici = None
+        for kanal in ("msedge", "chrome", None):
+            for gizli in (True, False):
+                try:
+                    tarayici = p.chromium.launch(
+                        channel=kanal, headless=gizli,
+                        args=["--window-position=-2400,-2400", "--mute-audio"])
+                except Exception:
+                    tarayici = None
+                    continue
+                sayfa = tarayici.new_page(locale="en-US", viewport={"width": 1280, "height": 900})
+                try:
+                    sayfa.goto(TIKTOK_TAG.format(etiket), timeout=45000,
+                               wait_until="domcontentloaded")
+                    bos = 0
+                    for _ in range(25):
+                        sayfa.wait_for_timeout(1500)
+                        yeni = sayfa.eval_on_selector_all(
+                            'a[href*="/video/"]', "els => els.map(e => e.href)")
+                        once = len(linkler)
+                        for u in yeni:
+                            u = u.split("?")[0]
+                            if u not in linkler:
+                                linkler.append(u)
+                        if len(linkler) >= limit:
+                            break
+                        bos = bos + 1 if len(linkler) == once else 0
+                        if bos >= 4:
+                            break
+                        sayfa.mouse.wheel(0, 2500)
+                except Exception:
+                    pass
+                tarayici.close()
+                if linkler:
+                    return linkler[:limit]
+            if kanal is None:
+                break
+    if not linkler:
+        raise RuntimeError("TikTok sayfası açılmadı ya da doğrulama (captcha) istedi")
+    return linkler[:limit]
 
 
 def hesaplar_oku():
@@ -199,6 +260,14 @@ def kaynaklardan_topla(a):
         except Exception as e:
             log(f"    Instagram olmadı ({type(e).__name__}). Instagram giriş istiyor: tarayıcıda "
                 f"instagram.com'a giriş yap ve --tarayici firefox (ya da edge/chrome) ekle.")
+    if "tiktok" in kaynaklar:
+        etiket = a.etiket or re.sub(r"\W+", "", a.ara.lower())
+        log(f"    TikTok #{etiket} taranıyor (arka planda Edge açılır)...")
+        try:
+            linkler += [("tiktok", u) for u in tiktok_tag(etiket, a.tara)]
+        except Exception as e:
+            log(f"    TikTok olmadı ({type(e).__name__}: {str(e)[:100]}). "
+                f"Takip ettiğin hesapları hesaplar.txt'ye yazarsan onlara bakılır.")
     if "hesaplar" in kaynaklar:
         hes = hesaplar_oku()
         if hes:
@@ -518,10 +587,10 @@ def isle(ad, a, sira):
 def main():
     global TARAYICI
     ap = argparse.ArgumentParser(description="Viral GTA 6 videolarını Türkçe altyazılı yap")
-    ap.add_argument("--kaynak", default="youtube,instagram,hesaplar",
-                    help="youtube, instagram, hesaplar (virgülle). Varsayılan hepsi")
+    ap.add_argument("--kaynak", default="youtube,instagram,tiktok,hesaplar",
+                    help="youtube, instagram, tiktok, hesaplar (virgülle). Varsayılan hepsi")
     ap.add_argument("--ara", default="GTA 6", help='YouTube arama kelimesi (varsayılan "GTA 6")')
-    ap.add_argument("--etiket", default="", help="Instagram hashtag (varsayılan: gta6)")
+    ap.add_argument("--etiket", default="", help="Instagram / TikTok hashtag (varsayılan: gta6)")
     ap.add_argument("--tarayici", default="",
                     help="Instagram/TikTok girişi için çerezleri bu tarayıcıdan al: "
                          "firefox, edge, chrome")

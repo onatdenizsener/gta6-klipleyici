@@ -27,7 +27,8 @@ VIRAL VIDEOLARI TURKCELESTIRMEK (YouTube Shorts + Instagram + TikTok)
 
   INSTAGRAM: tarayicida instagram.com'a giris yap, sonra
     shorts.bat --tarayici firefox      (ya da edge)
-  TIKTOK: takip ettigin GTA 6 sayfalarini hesaplar.txt'ye yaz (@kullanici)
+  TIKTOK: #gta6 sayfasi otomatik taranir (arka planda Edge acilir).
+          Takip ettigin sayfalari hesaplar.txt'ye de yazabilirsin (@kullanici)
 
   Ayarlar:
     shorts.bat --kac 5               5 video
@@ -35,6 +36,7 @@ VIRAL VIDEOLARI TURKCELESTIRMEK (YouTube Shorts + Instagram + TikTok)
     shorts.bat --sirala begeni       en cok begenilenler
     shorts.bat --sirala hiz          gunluk izlenmesi en yuksek (yeni patlayanlar)
     shorts.bat --kaynak youtube      sadece YouTube'a bak
+    shorts.bat --kaynak tiktok       sadece TikTok'a bak
     shorts.bat --sadece-liste        sadece listele, video yapma
     shorts.bat --altyazi ikili       orijinal + altinda Turkce
 

@@ -1,5 +1,6 @@
 # Takip edilecek hesaplar - her satira bir hesap.
 # Program bu hesaplarin son videolarina bakar, en cok izlenenleri Turkcelestirir.
+# (TikTok ve Instagram #gta6 zaten otomatik taranir; bu liste ek kaynak.)
 # "#" ile baslayan satirlar okunmaz. Satirin basindaki "#" isaretini silip kendi hesaplarini yaz.
 #
 # TikTok (sadece @kullanici yazman yeter):

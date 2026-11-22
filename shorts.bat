@@ -14,8 +14,8 @@ echo ============================================
 echo   GTA 6 Viral Videolar - Turkce Altyazi
 echo ============================================
 echo.
-echo YouTube Shorts, Instagram Reels ve hesaplar.txt'deki TikTok
-echo hesaplarindan son bir haftanin en cok izlenen yabanci GTA 6
+echo YouTube Shorts, Instagram Reels ve TikTok'tan son bir
+echo haftanin en cok izlenen yabanci GTA 6
 echo videolarini bulur, ayni videonun kopyalarini birlestirir,
 echo Turkce altyazili hale getirir.
 echo.
