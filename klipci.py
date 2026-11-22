@@ -616,8 +616,8 @@ def aciklama_yaz(ad, kelimeler, tr_parcalar, kaynak, bas, yayin_baslik):
         tr = tr_upper(max((p.get("tr", "") for p in tr_parcalar), key=len)[:70])
     tr = tr or en
     yayinci = re.sub(r"\s+", " ", str(yayin_baslik))[:60]
-    tik = "#gta6 #gta6türkiye #gta6klip #gta #oyun #keşfet #fyp"
-    yt = "#gta6 #gta6türkiye #shorts"
+    tik = "#gta6 #gta #gtavi #gta6türkiye #gta6klip #oyun #keşfet #fyp"
+    yt = "#gta6 #gtavi #gta6türkiye #shorts"
     return (f"=== TIKTOK ===\n{tr} 😳 {tik}\n\n"
             f"=== YOUTUBE SHORTS ===\nBaslik (max 100 karakter):\n{tr[:85]} #shorts\n\n"
             f"Aciklama:\n{tr}\n({en})\n\nKaynak yayin: {kaynak} ({sn_to_ts(bas)})\n{yt}\n\n"

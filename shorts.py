@@ -243,6 +243,11 @@ def islendi_isaretle(ad):
             f.write(k + "\n")
 
 
+def etiketler(a):
+    """Taranacak hashtag'ler. Varsayilan: TikTok Turkiye'de en cok izlenen GTA etiketleri."""
+    return [e.strip().lstrip("#") for e in a.etiket.split(",") if e.strip()]
+
+
 def kaynaklardan_topla(a):
     linkler = []   # (kaynak_adi, url)
     kaynaklar = [k.strip() for k in a.kaynak.split(",") if k.strip()]
@@ -253,18 +258,18 @@ def kaynaklardan_topla(a):
         except Exception as e:
             log(f"    YouTube araması olmadı ({type(e).__name__}: {str(e)[:120]})")
     if "instagram" in kaynaklar:
-        etiket = a.etiket or re.sub(r"\W+", "", a.ara.lower())
-        log(f"    Instagram #{etiket} taranıyor...")
         try:
-            linkler += [("instagram", u) for u in instagram_tag(etiket, a.tara)]
+            for etiket in etiketler(a):
+                log(f"    Instagram #{etiket} taranıyor...")
+                linkler += [("instagram", u) for u in instagram_tag(etiket, a.tara)]
         except Exception as e:
             log(f"    Instagram olmadı ({type(e).__name__}). Instagram giriş istiyor: tarayıcıda "
                 f"instagram.com'a giriş yap ve --tarayici firefox (ya da edge/chrome) ekle.")
     if "tiktok" in kaynaklar:
-        etiket = a.etiket or re.sub(r"\W+", "", a.ara.lower())
-        log(f"    TikTok #{etiket} taranıyor (arka planda Edge açılır)...")
         try:
-            linkler += [("tiktok", u) for u in tiktok_tag(etiket, a.tara)]
+            for etiket in etiketler(a):
+                log(f"    TikTok #{etiket} taranıyor (arka planda Edge açılır)...")
+                linkler += [("tiktok", u) for u in tiktok_tag(etiket, a.tara)]
         except Exception as e:
             log(f"    TikTok olmadı ({type(e).__name__}: {str(e)[:100]}). "
                 f"Takip ettiğin hesapları hesaplar.txt'ye yazarsan onlara bakılır.")
@@ -507,9 +512,9 @@ def aciklama_yaz(ad, baslik_tr, tr_parcalar):
     if not tr and tr_parcalar:
         tr = max((p.get("tr", "") for p in tr_parcalar), key=len)[:70]
     tr = tr_upper((tr or ad["baslik"])[:90])
-    tik = "#gta6 #gta6türkiye #gta6klip #gta #oyun #keşfet #fyp"
-    ig = "#gta6 #gta6türkiye #gta6klip #reels #oyun #keşfet"
-    yt = "#gta6 #gta6türkiye #shorts"
+    tik = "#gta6 #gta #gtavi #gta6türkiye #gta6klip #oyun #keşfet #fyp"
+    ig = "#gta6 #gta #gtavi #gta6türkiye #gta6klip #reels #oyun #keşfet"
+    yt = "#gta6 #gtavi #gta6türkiye #shorts"
     plat = PLATFORM_AD.get(ad["platform"], ad["platform"])
     kaynak = f"Kaynak: {ad['kanal']} ({plat}) {ad['url']}"
     kop = "".join(f"  - {PLATFORM_AD.get(k['platform'], k['platform'])} {k['kanal']}: "
@@ -590,7 +595,8 @@ def main():
     ap.add_argument("--kaynak", default="youtube,instagram,tiktok,hesaplar",
                     help="youtube, instagram, tiktok, hesaplar (virgülle). Varsayılan hepsi")
     ap.add_argument("--ara", default="GTA 6", help='YouTube arama kelimesi (varsayılan "GTA 6")')
-    ap.add_argument("--etiket", default="", help="Instagram / TikTok hashtag (varsayılan: gta6)")
+    ap.add_argument("--etiket", default="gta6,gtavi",
+                    help="Instagram / TikTok hashtag'leri, virgülle (varsayılan: gta6,gtavi)")
     ap.add_argument("--tarayici", default="",
                     help="Instagram/TikTok girişi için çerezleri bu tarayıcıdan al: "
                          "firefox, edge, chrome")
