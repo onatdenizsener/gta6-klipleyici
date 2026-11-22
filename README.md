@@ -50,7 +50,51 @@ klipler_cikti/
       altyazi.ass
 ```
 
-## Seçenekler
+## Viral videoları Türkçeleştir (`shorts.bat`)
+
+İkinci mod: **YouTube Shorts, Instagram Reels ve TikTok**'ta son bir haftanın en çok izlenen yabancı GTA 6 videolarını bulur, indirir, konuşmayı yazıya döker, Türkçeye çevirir ve büyük Türkçe altyazılı 1080x1920 video yapar.
+
+```
+Kaynaklar: YouTube araması + Instagram #gta6 + hesaplar.txt (TikTok/YouTube hesapları)
+  ├─ 1. Topla ................ izlenme, beğeni, tarih (son 1 hafta)
+  ├─ 2. Kopyaları birleştir .. aynı süre + aynı kapak / başlık = aynı video
+  │                            kaynak = ilk yükleyen, sıralama = tüm kopyaların toplam izlenmesi
+  ├─ 3. İndir + Whisper ...... Türkçe olanı, sadece müzik olanı atlar;
+  │                            konuşması daha önce yapılan bir videoyla aynıysa atlar
+  ├─ 4. Türkçeye çevir ....... Google → MyMemory → Claude (başlık da çevrilir)
+  └─ 5. Video ................ dikey 1080x1920, Türkçe altyazı + aciklama.txt
+```
+
+**`shorts.bat`**'a çift tıkla, boş bırakıp Enter'a bas → en viral 3 video hazırlanır. Belirli bir videoyu yapmak için linkini yapıştır (YouTube, TikTok, Instagram).
+
+### Herkes birbirinden alıyor: kopyalar
+
+Aynı video genelde 5-10 hesapta birden dolaşıyor. Program bunları tek video sayar:
+- **Aynı turda:** süre ±1,5 sn ve kapak resmi (siyah bantlar kırpılarak) ya da başlık aynıysa birleştirir. Kaynak olarak **en erken yükleyen** yazılır, diğer hesaplar `aciklama.txt`'nin NOT kısmında listelenir.
+- **Farklı turlarda / farklı başlıkla:** konuşma metni daha önce yapılan bir videoyla %75+ aynıysa atlar. Atlanan kopya daha eskiyse hazır videonun `aciklama.txt`'si gerçek orijinale kaynak verecek şekilde düzeltilir.
+
+### Instagram ve TikTok
+
+- **Instagram** giriş istiyor. Tarayıcıda instagram.com'a giriş yap, sonra `shorts.bat --tarayici firefox` (ya da `edge`). Chrome'da çerez okuma Windows'ta çoğu zaman çalışmıyor; Firefox en sorunsuzu.
+- **TikTok** hashtag aramasını yt-dlp şu an desteklemiyor. Takip ettiğin GTA 6 sayfalarını **`hesaplar.txt`**'ye yaz (`@kullanici`), program her birinin son 12 videosuna bakar. YouTube kanalı da yazabilirsin (`https://www.youtube.com/@kanal/shorts`).
+
+Çıktı `klipler_cikti/shorts/` altında: video, `aciklama.txt` (TikTok + Reels + Shorts metni, orijinal hesaba kaynak verilmiş), `bilgi.json`. `son_liste.json` taranan tüm adayları, `islenenler.txt` ve `yapilan_metinler.json` bir daha seçilmeyecek videoları tutar.
+
+| Seçenek | Ne yapar |
+|---|---|
+| `--kac 5` | 5 video yap (varsayılan 3) |
+| `--kaynak youtube,instagram,hesaplar` | Hangi kaynaklara bakılsın (varsayılan hepsi) |
+| `--tarayici firefox` | Instagram/TikTok girişini bu tarayıcıdan al |
+| `--donem gun/hafta/ay/yil/hepsi` | Hangi dönemin videoları (varsayılan hafta) |
+| `--sirala izlenme/begeni/hiz` | En çok izlenen (varsayılan), en çok beğenilen, ya da günlük izlenmesi en yüksek |
+| `--ara "GTA 6 Lucia"` | YouTube arama kelimesi |
+| `--etiket gta6vicecity` | Instagram hashtag'i (varsayılan gta6) |
+| `--altyazi ikili` | Orijinal dil + altında Türkçe (varsayılan sadece Türkçe) |
+| `--sadece-liste` | Video yapma, sadece en viral adayları listele |
+| `--min-izlenme 1000` | Daha az izlenenleri de al (varsayılan 10.000) |
+| `--tekrar` | Daha önce yapılanları da tekrar değerlendir |
+
+## Seçenekler (`klip.bat`)
 
 Komut satırından `klip.bat` ile birlikte:
 
@@ -77,4 +121,4 @@ Komut satırından `klip.bat` ile birlikte:
 
 ## Telif ve izin
 
-Başkasının yayınından klip paylaşıp para kazanacaksan yayıncının klip programı ya da izni olduğundan emin ol. İzinsiz kullanım telif şikâyetine yol açabilir. Bu araç sadece kesme ve düzenleme işini otomatikleştirir, içerik hakları yayıncıya aittir.
+Başkasının videosunu ya da yayınından klip paylaşıp para kazanacaksan yayıncının klip programı ya da izni olduğundan emin ol. İzinsiz kullanım telif şikâyetine yol açabilir. Bu araç sadece kesme ve düzenleme işini otomatikleştirir, içerik hakları yayıncıya aittir.

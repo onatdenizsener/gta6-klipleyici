@@ -13,7 +13,32 @@ KLIP CIKARMAK
                                                            Turkce baslik, aciklama, hashtag
                                      \altyazi.ass
 
-NE YAPIYOR
+VIRAL VIDEOLARI TURKCELESTIRMEK (YouTube Shorts + Instagram + TikTok)
+  1. shorts.bat dosyasina cift tikla.
+  2. Bos birak, Enter -> son bir haftanin en cok izlenen yabanci GTA 6
+     videolarindan 3 tanesini bulur, Turkce altyazili yapar.
+     (Belirli bir videoyu yapmak istersen linkini yapistir.)
+  3. Bitince klasor acilir: klipler_cikti\shorts\...
+       video1_....mp4   <- Turkce altyazili dikey video
+       aciklama.txt     <- TikTok + Reels + Shorts metni, orijinal hesap kaynak olarak yazili
+  Ayni video bir daha secilmez. Baska hesaplarin ayni videoyu tekrar
+  yuklemesi de yakalanir (herkes birbirinden aliyor), kaynak olarak ilk
+  yukleyen yazilir.
+
+  INSTAGRAM: tarayicida instagram.com'a giris yap, sonra
+    shorts.bat --tarayici firefox      (ya da edge)
+  TIKTOK: takip ettigin GTA 6 sayfalarini hesaplar.txt'ye yaz (@kullanici)
+
+  Ayarlar:
+    shorts.bat --kac 5               5 video
+    shorts.bat --donem ay            son 1 ayin en cok izlenenleri
+    shorts.bat --sirala begeni       en cok begenilenler
+    shorts.bat --sirala hiz          gunluk izlenmesi en yuksek (yeni patlayanlar)
+    shorts.bat --kaynak youtube      sadece YouTube'a bak
+    shorts.bat --sadece-liste        sadece listele, video yapma
+    shorts.bat --altyazi ikili       orijinal + altinda Turkce
+
+NE YAPIYOR (klip.bat)
   1. Sadece sesi indirir (4 saatlik yayin ~200 MB, hizli)
   2. Sesin patladigi anlari + chat'in coskuldugu anlari bulur
   3. En iyi 15 adayi Whisper ile yaziya doker

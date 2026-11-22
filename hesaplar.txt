@@ -1,0 +1,12 @@
+# Takip edilecek hesaplar - her satira bir hesap.
+# Program bu hesaplarin son videolarina bakar, en cok izlenenleri Turkcelestirir.
+# "#" ile baslayan satirlar okunmaz. Satirin basindaki "#" isaretini silip kendi hesaplarini yaz.
+#
+# TikTok (sadece @kullanici yazman yeter):
+# @ornektiktokhesabi
+#
+# YouTube kanalinin Shorts sekmesi:
+# https://www.youtube.com/@ornekkanal/shorts
+#
+# Instagram tek tek hesap listelemeyi yt-dlp su an desteklemiyor;
+# Instagram icin hashtag kullaniliyor (--etiket gta6). Tek bir Reel icin --link kullan.

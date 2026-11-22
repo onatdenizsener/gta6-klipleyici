@@ -436,29 +436,32 @@ def tr_upper(t):
     return t.replace("i", "İ").replace("ı", "I").upper()
 
 
-def cevir_tr(metinler):
-    """Ingilizce satirlari Turkceye cevirir. Once Google Translate, olmazsa Claude."""
+def cevir_tr(metinler, kaynak="en"):
+    """Satirlari Turkceye cevirir (kaynak dil varsayilan Ingilizce, 'auto' da olur).
+    Once Google Translate, olmazsa MyMemory, olmazsa Claude."""
     if not metinler:
         return []
     import time
     import requests
     temiz = [m.replace("\n", " ").strip() or "..." for m in metinler]
     hatalar = []
+    kaynak = kaynak or "auto"
 
     def gtx(metin):
         r = requests.get("https://translate.googleapis.com/translate_a/single",
-                         params={"client": "gtx", "sl": "en", "tl": "tr", "dt": "t", "q": metin},
+                         params={"client": "gtx", "sl": kaynak, "tl": "tr", "dt": "t", "q": metin},
                          timeout=20)
         r.raise_for_status()
         return "".join(p[0] for p in r.json()[0] if p and p[0])
 
     def deep(metin):
         from deep_translator import GoogleTranslator
-        return GoogleTranslator(source="en", target="tr").translate(metin)
+        return GoogleTranslator(source=kaynak, target="tr").translate(metin)
 
     def mymemory(metin):
         from deep_translator import MyMemoryTranslator
-        return MyMemoryTranslator(source="en-US", target="tr-TR").translate(metin)
+        return MyMemoryTranslator(source="en-US" if kaynak in ("en", "auto") else kaynak,
+                                  target="tr-TR").translate(metin)
 
     for ad, f in (("google-api", gtx), ("google", deep)):
         for deneme in range(2):
@@ -484,7 +487,7 @@ def cevir_tr(metinler):
     log(f"    Ceviri servisleri olmadi ({', '.join(hatalar)})")
     if claude_var():
         try:
-            prompt = ("Asagidaki yayin konusmasi satirlarini dogal, gunluk, yayinci agzi "
+            prompt = ("Asagidaki video konusmasi satirlarini dogal, gunluk, yayinci agzi "
                       "Turkceye cevir. Kufurleri yumusat. Ayni sirada, satir sayisi ayni, "
                       "SADECE JSON liste don: [\"...\", ...]\n" +
                       json.dumps(metinler, ensure_ascii=False))
